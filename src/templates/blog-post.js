@@ -12,7 +12,6 @@ import kebabCase from 'lodash/kebabCase'
 import Layout from '../layouts/BaseLayout'
 import ReadingProgress from '../components/ReadingProgress'
 import SEO from '../components/SEO/SEO'
-import Cover from '../components/Cover'
 import Comments from '../components/Comments/Comments'
 import PostLoop from '../components/PostLoop/PostLoop'
 import ListItemGrid from '../components/List/ListItemGrid'
@@ -107,19 +106,6 @@ export default class BlogPost extends Component {
 
     let postDate = new Date(post.frontmatter.date)
 
-    // Check if post has thumbnail
-    let postImage
-    if (post.frontmatter.cover_image !== null) {
-      postImage = post.frontmatter.cover_image.publicURL
-
-      if (post.frontmatter.cover_image.childImageSharp !== null) {
-        postImage =
-          post.frontmatter.cover_image.childImageSharp &&
-          post.frontmatter.cover_image.childImageSharp.sizes &&
-          post.frontmatter.cover_image.childImageSharp.sizes.src
-      }
-    }
-
     return (
       <Layout className="Blog">
         {/*----- Reading progress only on blog -----*/}
@@ -128,7 +114,6 @@ export default class BlogPost extends Component {
         )}
         <SEO
           key={`seo-${post.fields.slug}`}
-          postImage={postImage}
           postData={post}
           isBlogPost
         />
@@ -141,10 +126,6 @@ export default class BlogPost extends Component {
           className={'ArticlePage ' + post.frontmatter.section}
           id="Article"
         >
-          {/*----- Cover image only on blog -----*/}
-          {post.frontmatter.section === 'blog' && (
-            <Cover image={post.frontmatter.cover_image} />
-          )}
           <section className="container">
             {/*----- Post content -----*/}
             <section className="content">
@@ -204,7 +185,6 @@ export const query = graphql`
         date(formatString: "DD MMMM, YYYY")
         tags
         section
-        cover_image
       }
       body
       fields {
@@ -222,7 +202,6 @@ export const query = graphql`
             title
             date(formatString: "DD MMMM, YYYY")
             tags
-            cover_image
           }
           fields {
             slug

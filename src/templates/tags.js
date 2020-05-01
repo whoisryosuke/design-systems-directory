@@ -88,7 +88,6 @@ export const pageQuery = graphql`
             title
             date
             tags
-            cover_image
             section
           }
           fields {
