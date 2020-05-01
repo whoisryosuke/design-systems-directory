@@ -5,8 +5,6 @@ import { Flex, Box, Text, Link as RLink } from 'rebass/styled-components'
 
 import capitalizeFirstLetter from '../helpers/uppercase'
 
-import MastheadSVG from '@assets/svg/masthead-circles.svg'
-
 import Layout from '../layouts/BaseLayout'
 import SEO from '@components/SEO/SEO'
 import ButtonOutline from '../components/Button/ButtonOutline'
@@ -32,7 +30,6 @@ const StyledLink = styled(GLink)`
 `
 
 const StyledBackground = styled.section`
-  background-image: url(${MastheadSVG});
   background-repeat: no-repeat;
   background-size: 50%;
   background-position: top right;
