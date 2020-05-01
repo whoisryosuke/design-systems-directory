@@ -7,6 +7,7 @@
 const path = require(`path`);
 const { createFilePath } = require(`gatsby-source-filesystem`);
 const createPaginatedPages = require("gatsby-paginate");
+const { createArticlesPagination } = require("./scripts/build/json-pagination")
 
 /** 
  * Custom Webpack config
@@ -97,9 +98,8 @@ async function createMdxPagination(section, prefix, graphql, createPage, reporte
 
 }
 
-exports.createPages = async ({ graphql, actions, reporter }) => {
-    // Destructure the createPage function from the actions object
-    const { createPage } = actions
+async function createMdxPages(graphql, createPage, reporter) {
+
     const result = await graphql(`
     query {
       allMdx {
@@ -154,7 +154,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     let tags = [];
     // Iterate through each post, putting all found tags into `tags`
     posts.forEach(({ node }) => {
-        if('tags' in node.frontmatter) {
+        if ('tags' in node.frontmatter) {
             tags = tags.concat(node.frontmatter.tags);
         }
     });
@@ -172,6 +172,18 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             },
         });
     });
+}
+
+
+exports.createPages = async ({ graphql, actions, reporter }) => {
+    // Destructure the createPage function from the actions object
+    const { createPage } = actions
+
+    // Create pages from MDX content
+    await createMdxPages(graphql, createPage, reporter)
+
+    // Create paginatino for JSON content
+    await createArticlesPagination(graphql, createPage, reporter)
 
     // Create pagination archive pages
     await createMdxPagination('blog', 'blog', graphql, createPage, reporter)

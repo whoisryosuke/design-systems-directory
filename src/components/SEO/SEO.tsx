@@ -81,7 +81,7 @@ const getSchemaOrgJSONLD = ({
 const SEO = ({ postData, postImage, isBlogPost, title, description, url }) => {
   const postMeta = postData && 'frontmatter' in postData ? postData.frontmatter : {}
 
-  const pageTitle = title || postMeta.title || config.title
+  const pageTitle = title || postMeta.title
   const pageDescription =
     description || postMeta.description || config.description
   const image = `${config.url}${postImage}` || config.image
@@ -102,7 +102,7 @@ const SEO = ({ postData, postImage, isBlogPost, title, description, url }) => {
   return (
     <Helmet>
       {/* General tags */}
-      <title>{pageTitle ? pageTitle + ' - Ryosuke' : 'Ryosuke'}</title>
+      <title>{pageTitle ? pageTitle + ` - ${config.title}` : config.title}</title>
       <meta name="description" content={pageDescription} />
       <meta name="image" content={image} />
 

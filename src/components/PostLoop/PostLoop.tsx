@@ -3,15 +3,11 @@ import { Flex } from 'rebass/styled-components'
 import nicetime from '../../helpers/nicetime'
 
 import BasicCard from '../Card/BasicCard'
+import ArticleCard from '../Card/ArticleCard'
 import ProjectCard from '../Card/ProjectCard'
 
 export default props => {
-  const links = {
-    blog: 'Read post',
-    project: 'View project',
-  }
   let postLoop
-  const currentDate = new Date()
 
   if (props.loop !== undefined) {
     postLoop = props.loop
@@ -23,7 +19,6 @@ export default props => {
         }
       })
       .map(({ node }) => {
-        const postDate = new Date(node.frontmatter.date)
         switch (props.type) {
           case 'blog':
           case 'blogs':
@@ -35,7 +30,6 @@ export default props => {
                 description={node.excerpt}
                 link={node.fields.slug}
               />
-              //                 <span className="date">{ nicetime(currentDate, postDate) }</span>
             )
           case 'project':
           case 'projects':
@@ -47,6 +41,21 @@ export default props => {
                 link={node.fields.slug}
               />
             )
+
+          case 'articles':
+          case 'article':
+            return (
+              <ArticleCard
+                width={[1, 1, 1 / 2, 1 / 2, 1 / 3]}
+                title={node.title}
+                href={node.url}
+                subtitle={node.author}
+                description={node.description}
+                date={node.date}
+              />
+            )
+
+
           default:
             return (
               <BasicCard
