@@ -12,9 +12,10 @@ const CardGroup: React.FunctionComponent<ICardGroupProps> = ({
   ...props
 }) => {
     const desktopWidth = 1 / columns
+    const nthChild = `& div:nth-child(${columns}n - ${columns - 1})`
   const renderChildren = React.Children.map(children, (child) => <Box width={[1, desktopWidth]} p={3}>{child}</Box>)
   return (
-    <Flex flexWrap="wrap" {...props}>
+    <Flex flexWrap="wrap" {...props} sx={{ [nthChild]: { marginLeft: -2}}}>
       {renderChildren}
     </Flex>
   )
