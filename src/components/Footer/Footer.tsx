@@ -4,7 +4,7 @@ import { GitHub, Twitter } from "react-feather"
 import Link from "../Link/Link"
 import Dropdown from "../Dropdown/Dropdown"
 
-const List = ({ children }) => <Box as="ul" width={[1 / 2, 1 / 4]} sx={{
+const List = ({ children }) => <Box as="ul" width={[1, 1/2, 1 / 4]} mb={[3,0]} sx={{
   padding:0,
   listStyleType: "none"
 }}>{children}</Box>
@@ -50,12 +50,12 @@ export const Footer: React.FC<Props> = () => {
         </List>
 
       </Flex>
-      <Flex alignItems="center">
-        <Box sx={{"& svg": { color: "#6a6a6a", "&:hover": {color:"primary"} }, "& a": { marginRight: 3}}}>
+      <Flex alignItems="center" flexWrap="wrap">
+        <Box mb={[2, 0]} sx={{"& svg": { color: "#6a6a6a", "&:hover": {color:"primary"} }, "& a": { marginRight: 3}}}>
           <a href="#"><GitHub /></a>
           <a href="#"><Twitter /></a>
         </Box>
-        <Flex minWidth="15em" ml={4} alignItems="center">
+        <Flex minWidth="15em" ml={[0, 4]} mb={[2, 0]} alignItems="center">
           <Text variant="label" mr={4}>Theme:</Text>
           <Box width={1}>
             <Dropdown>
@@ -64,7 +64,7 @@ export const Footer: React.FC<Props> = () => {
             </Dropdown>
           </Box>
         </Flex>
-        <Text variant="paragraph" fontSize={0} color="gray.dark" fontStyle="italic" ml={4} mb={0}>
+        <Text variant="paragraph" fontSize={0} color="gray.dark" fontStyle="italic" ml={[0,4]} mb={0}>
           Last updated 4/20/2020
         </Text>
       </Flex>

@@ -20,8 +20,8 @@ export default class Frontpage extends Component {
   render() {
     let { data } = this.props
     const { articles, designSystems, videos, events } = data
-    const firstVideo = videos.edges[0].node
-    const restVideos = videos.edges.splice(0, 1)
+    const firstVideo = videos && videos.edges.length > 0 && videos.edges[0].node
+    const restVideos = videos && videos.edges.length > 0 && videos.edges.splice(0, 1)
     const videoThumbnail = getVideoThumbnail(
       firstVideo.platform,
       firstVideo.url
@@ -75,25 +75,26 @@ export default class Frontpage extends Component {
           </Box>
         </Segment>
 
+        {firstVideo &&
         <Segment>
           <Heading as="h2" variant="h2">
             Videos
           </Heading>
-          <Flex>
+          <Flex flexWrap="wrap">
             <ImageCard
-              width={(1, 1 / 3)}
-              title={videos.edges[0].node.title}
-              href={videos.edges[0].node.url}
-              subtitle={videos.edges[0].node.author}
+              width={[1, 1 / 3]}
+              title={firstVideo.title}
+              href={firstVideo.url}
+              subtitle={firstVideo.author}
               image={videoThumbnail}
-              date={videos.edges[0].node.date}
+              date={firstVideo.date}
             />
-            <Box width={(1, 2 / 3)} ml={4}>
+            <Box width={[1, 2 / 3]} ml={[0,4]} my={[4,0]}>
               <Table width={1}>
                 <thead>
                   <tr>
                     <th>Video</th>
-                    <th>Author</th>
+                    <Box as="th" display={['none', 'inherit']}>Author</Box>
                     <th>Date</th>
                   </tr>
                 </thead>
@@ -105,7 +106,7 @@ export default class Frontpage extends Component {
                           <td>
                             <a href={url}>{title}</a>
                           </td>
-                          <td>{author}</td>
+                          <Box as="td" display={['none', 'inherit']}>{author}</Box>
                           <td>{date}</td>
                         </tr>
                       )
@@ -119,6 +120,7 @@ export default class Frontpage extends Component {
             <Link to="/videos">View all videos</Link>
           </Box>
         </Segment>
+        }
 
         <Segment>
           <Heading as="h2" variant="h2">
@@ -127,7 +129,7 @@ export default class Frontpage extends Component {
           <CardGroup columns={3}>
             {events.edges.map(({ node: { title, url, location, date } }) => {
               return (
-                <EventCard title={title} href={url} date={date} {...location} />
+                <EventCard width={1} title={title} href={url} date={date} {...location} />
               )
             })}
           </CardGroup>
