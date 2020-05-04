@@ -11,6 +11,7 @@ import SEO from '@components/SEO/SEO'
 import ButtonLink from '@components/Button/ButtonLink'
 import SectionHeading from '../components/SectionHeading/SectionHeading'
 import PostLoop from '../components/PostLoop/PostLoop'
+import Segment from '@components/Segment/Segment'
 import SubmitSegment from '@components/SubmitSegment/SubmitSegment'
 
 const StyledLink = styled(GLink)`
@@ -36,12 +37,27 @@ const StyledBackground = styled.section`
   background-position: top right;
 `
 
-const NavLink = ({icon,url,test,text, reverse, ...props}) => {
-    return (
-      <ButtonLink width={[1 / 2, 1 / 3]} to={url} icon={icon} disabled={!test} reverse={reverse}>
-        {text}
-      </ButtonLink>
-    )
+const NavLink = ({
+  icon,
+  url,
+  disabled,
+  text,
+  justifyContent,
+  reverse,
+  ...props
+}) => {
+  return (
+    <ButtonLink
+      width={[1 / 2, 1 / 3]}
+      to={url}
+      icon={icon}
+      disabled={disabled}
+      reverse={reverse}
+      justifyContent={justifyContent}
+    >
+      {text}
+    </ButtonLink>
+  )
 }
 
 const IndexPage = ({ data, pathContext }) => {
@@ -52,11 +68,9 @@ const IndexPage = ({ data, pathContext }) => {
       : '/' + pathPrefix + '/' + (index - 1).toString()
   const nextUrl = '/' + pathPrefix + '/' + (index + 1).toString()
 
-  const emojis = {
-    projects: '🎨',
-    blog: '📓',
-  }
   const sectionName = capitalizeFirstLetter(pathPrefix)
+  const sectionNameSmall = pathPrefix.replace('-', ' ')
+  console.log('pagination', first,last)
 
   return (
     <Layout className="BlogArchive">
@@ -65,25 +79,33 @@ const IndexPage = ({ data, pathContext }) => {
         title={`${sectionName} Archive - Page ${index}`}
         url={pathPrefix}
       />
-      <StyledBackground>
+      <Segment>
         <SectionHeading
-          emoji={emojis[pathPrefix]}
-          heading={`${sectionName} archive`}
+          heading={`Browsing all`}
+          highlight={sectionNameSmall}
           subtitle={`Page ${index}`}
         />
 
-        <Box bg="muted">
-          <PostLoop type={pathPrefix} loop={group} />
-        </Box>
+        <PostLoop type={pathPrefix} loop={group} />
 
-        <Flex as="nav" py={3} justifyContent="space-between">
-          <NavLink test={first} url={previousUrl} icon={ArrowLeft} text="Previous Page" reverse />
-          <NavLink test={last} url={nextUrl} icon={ArrowRight} text="Next Page" />
+        <Flex as="nav" py={4} justifyContent="space-between">
+          <NavLink
+            disabled={first}
+            url={previousUrl}
+            icon={ArrowLeft}
+            text="Previous Page"
+            reverse
+          />
+          <NavLink
+            disabled={last}
+            url={nextUrl}
+            icon={ArrowRight}
+            text="Next Page"
+            justifyContent="flex-end"
+          />
         </Flex>
-        
-        <SubmitSegment />
-
-      </StyledBackground>
+      </Segment>
+      <SubmitSegment />
     </Layout>
   )
 }
