@@ -21,7 +21,8 @@ export default class Frontpage extends Component {
     let { data } = this.props
     const { articles, designSystems, videos, events } = data
     const firstVideo = videos && videos.edges.length > 0 && videos.edges[0].node
-    const restVideos = videos && videos.edges.length > 0 && videos.edges.splice(0, 1)
+    const restVideos =
+      videos && videos.edges.length > 0 && videos.edges.splice(0, 1)
     const videoThumbnail = getVideoThumbnail(
       firstVideo.platform,
       firstVideo.url
@@ -75,52 +76,56 @@ export default class Frontpage extends Component {
           </Box>
         </Segment>
 
-        {firstVideo &&
-        <Segment>
-          <Heading as="h2" variant="h2">
-            Videos
-          </Heading>
-          <Flex flexDirection={["column","row"]}>
-            <ImageCard
-              width={[1, 1 / 3]}
-              title={firstVideo.title}
-              href={firstVideo.url}
-              subtitle={firstVideo.author}
-              image={videoThumbnail}
-              date={firstVideo.date}
-            />
-            <Box width={[1, 2 / 3]} ml={[0,4]} my={[4,0]}>
-              <Table width={1}>
-                <thead>
-                  <tr>
-                    <th>Video</th>
-                    <Box as="th" display={['none', 'table-cell']}>Author</Box>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {restVideos.map(
-                    ({ node: { title, url, platform, author, date } }) => {
-                      return (
-                        <tr>
-                          <td>
-                            <a href={url}>{title}</a>
-                          </td>
-                          <Box as="td" display={['none', 'table-cell']}>{author}</Box>
-                          <td>{date}</td>
-                        </tr>
-                      )
-                    }
-                  )}
-                </tbody>
-              </Table>
+        {firstVideo && (
+          <Segment>
+            <Heading as="h2" variant="h2">
+              Videos
+            </Heading>
+            <Flex flexDirection={['column', 'row']}>
+              <ImageCard
+                width={[1, 1 / 3]}
+                title={firstVideo.title}
+                href={firstVideo.url}
+                subtitle={firstVideo.author}
+                image={videoThumbnail}
+                date={firstVideo.date}
+              />
+              <Box width={[1, 2 / 3]} ml={[0, 4]} my={[4, 0]}>
+                <Table width={1}>
+                  <thead>
+                    <tr>
+                      <th>Video</th>
+                      <Box as="th" display={['none', 'table-cell']}>
+                        Author
+                      </Box>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {restVideos.map(
+                      ({ node: { title, url, platform, author, date } }) => {
+                        return (
+                          <tr>
+                            <td>
+                              <a href={url}>{title}</a>
+                            </td>
+                            <Box as="td" display={['none', 'table-cell']}>
+                              {author}
+                            </Box>
+                            <td>{date}</td>
+                          </tr>
+                        )
+                      }
+                    )}
+                  </tbody>
+                </Table>
+              </Box>
+            </Flex>
+            <Box textAlign="right">
+              <Link to="/videos">View all videos</Link>
             </Box>
-          </Flex>
-          <Box textAlign="right">
-            <Link to="/videos">View all videos</Link>
-          </Box>
-        </Segment>
-        }
+          </Segment>
+        )}
 
         <Segment>
           <Heading as="h2" variant="h2">
@@ -129,7 +134,13 @@ export default class Frontpage extends Component {
           <CardGroup columns={3}>
             {events.edges.map(({ node: { title, url, location, date } }) => {
               return (
-                <EventCard width={1} title={title} href={url} date={date} {...location} />
+                <EventCard
+                  width={1}
+                  title={title}
+                  href={url}
+                  date={date}
+                  {...location}
+                />
               )
             })}
           </CardGroup>

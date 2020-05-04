@@ -70,7 +70,7 @@ const IndexPage = ({ data, pathContext }) => {
 
   const sectionName = capitalizeFirstLetter(pathPrefix)
   const sectionNameSmall = pathPrefix.replace('-', ' ')
-  console.log('pagination', first,last)
+  console.log('pagination', first, last)
 
   return (
     <Layout className="BlogArchive">
