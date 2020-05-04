@@ -9,7 +9,7 @@ export const Segment: React.FC<Props> = ({ children, ...props }) => {
     return (
         <Box
             bg="background"
-            px={3}
+            px={4}
             py={4}
             sx={{
                 borderBottom:"1px solid",
