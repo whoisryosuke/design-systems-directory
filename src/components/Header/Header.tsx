@@ -150,7 +150,7 @@ const Logotype = styled(Link)`
 const Header = React.memo(({mobile, visible, toggleVisibility}) => {
 
   return (
-    <Flex position="fixed" px={4} py={3} justifyContent="space-between">
+    <Flex width={1} bg="white" px={4} py={3} justifyContent="space-between" sx={{ position: "fixed", zIndex: 710 }} >
       <Logotype to={'/'}>
         <Text as="h4">Design Systems Directory</Text>
       </Logotype>

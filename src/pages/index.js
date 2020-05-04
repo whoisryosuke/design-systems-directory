@@ -80,7 +80,7 @@ export default class Frontpage extends Component {
           <Heading as="h2" variant="h2">
             Videos
           </Heading>
-          <Flex flexWrap="wrap">
+          <Flex flexDirection={["column","row"]}>
             <ImageCard
               width={[1, 1 / 3]}
               title={firstVideo.title}
@@ -94,7 +94,7 @@ export default class Frontpage extends Component {
                 <thead>
                   <tr>
                     <th>Video</th>
-                    <Box as="th" display={['none', 'inherit']}>Author</Box>
+                    <Box as="th" display={['none', 'table-cell']}>Author</Box>
                     <th>Date</th>
                   </tr>
                 </thead>
@@ -106,7 +106,7 @@ export default class Frontpage extends Component {
                           <td>
                             <a href={url}>{title}</a>
                           </td>
-                          <Box as="td" display={['none', 'inherit']}>{author}</Box>
+                          <Box as="td" display={['none', 'table-cell']}>{author}</Box>
                           <td>{date}</td>
                         </tr>
                       )

@@ -25,7 +25,7 @@ const BaseLayout = ({ children }) => (
     </Helmet>
     <MobileHeader />
 
-    <Box as="section" className="App">
+    <Box as="section" pt={4} className="App">
       {children}
     </Box>
 

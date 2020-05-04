@@ -15,7 +15,7 @@ const CardGroup: React.FunctionComponent<ICardGroupProps> = ({
     const nthChild = `& > div:nth-child(${columns}n - ${columns - 1})`
   const renderChildren = React.Children.map(children, (child) => <Box width={[1, desktopWidth]} p={[0, 3]} mb={[3,0]}>{child}</Box>)
   return (
-    <Flex flexWrap="wrap" {...props} sx={{ [nthChild]: { marginLeft: [0, -2]}}}>
+    <Flex flexDirection={["column", "row"]} {...props} sx={{ [nthChild]: { marginLeft: [0, -2]}}}>
       {renderChildren}
     </Flex>
   )
