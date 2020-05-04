@@ -216,10 +216,16 @@ const theme = {
       },
     },
     disabled: {
-      variant: 'buttons.disabled',
-      bg: "white",
-      borderColor: "gray.border",
-      color: "gray.dark",
+      variant: 'buttons.primary',
+      bg: 'white',
+      borderWidth: '1px',
+      borderStyle: "solid",
+      borderColor: 'gray.border',
+      color: 'gray.dark',
+      boxShadow: 'none',
+      ':hover,:focus,.active': {
+        transform: 'translateY(0)',
+      },
     },
     masthead: {
       variant: 'buttons.primary',
