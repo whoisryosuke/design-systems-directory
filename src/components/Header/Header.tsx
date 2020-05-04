@@ -51,12 +51,12 @@ const MobileButton = styled(Box)`
 
 const StyledHeaderNav = styled.nav`
   display: inline-block;
-  margin-right: 1em;
+  margin-left: 1em;
 
   & li {
     list-style-type: none;
     display: inline-block;
-    margin-right: 2.25em;
+    margin-left: 2.25em;
 
     & a {
       font-family: ${({ theme }) => theme.fonts.body};
@@ -70,10 +70,6 @@ const StyledHeaderNav = styled.nav`
       &:hover,
       &:focus {
         color: ${({ theme }) => theme.colors.primary};
-      }
-
-      & span {
-        display: none;
       }
     }
   }
@@ -107,11 +103,6 @@ const StyledHeaderNav = styled.nav`
       & a {
         padding:4em 1em;
         transition:color 300ms ease-out;
-
-        & span {
-          margin-left:1em;
-          display:inline-block;
-        }
 
         &:hover, &:focus {
           color:${props.theme.colors.white};
@@ -159,7 +150,7 @@ const Logotype = styled(Link)`
 const Header = React.memo(({mobile, visible, toggleVisibility}) => {
 
   return (
-    <Flex position="fixed" px={2} py={3} justifyContent="space-between">
+    <Flex position="fixed" px={4} py={3} justifyContent="space-between">
       <Logotype to={'/'}>
         <Text as="h4">Design Systems Directory</Text>
       </Logotype>
@@ -168,18 +159,28 @@ const Header = React.memo(({mobile, visible, toggleVisibility}) => {
         <StyledHeaderNav mobile={mobile} visible={visible}>
           <Box as="ul">
             <li>
-              <Link to={'/blog'}>
-                  Writing <span>📓</span>
+              <Link to={'/design-systems'}>
+                  Design Systems
               </Link>
             </li>
             <li>
-              <Link to={'/how-to-use'}>
-                  How to Use <span>💽</span>
+              <Link to={'/articles'}>
+                  Articles
               </Link>
             </li>
             <li>
-              <Link to={'/about'}>
-                  About <span>👨‍💻</span>
+              <Link to={'/videos'}>
+                  Videos
+              </Link>
+            </li>
+            <li>
+              <Link to={'/events'}>
+                  Events
+              </Link>
+            </li>
+            <li>
+              <Link to={'/communities'}>
+                  Communities
               </Link>
             </li>
           </Box>
