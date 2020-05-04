@@ -112,11 +112,7 @@ export default class BlogPost extends Component {
         {post.frontmatter.section === 'blog' && (
           <ReadingProgress targetEl="#Article" />
         )}
-        <SEO
-          key={`seo-${post.fields.slug}`}
-          postData={post}
-          isBlogPost
-        />
+        <SEO key={`seo-${post.fields.slug}`} postData={post} isBlogPost />
         <Box
           maxWidth="text"
           mx="auto"
