@@ -1,30 +1,31 @@
 import React from 'react'
-import { Flex } from 'rebass/styled-components'
-import nicetime from '../../helpers/nicetime'
+import getVideoThumbnail from '@helpers/getVideoThumbnail'
 
+import CardGroup from '../Card/CardGroup'
 import BasicCard from '../Card/BasicCard'
 import ArticleCard from '../Card/ArticleCard'
 import ProjectCard from '../Card/ProjectCard'
+import EventCard from '../Card/EventCard'
+import ImageCard from '../Card/ImageCard'
 
-export default props => {
+const PostLoop = ({loop,skip,type}) => {
   let postLoop
 
-  if (props.loop !== undefined) {
-    postLoop = props.loop
+  if (loop !== undefined) {
+    postLoop = loop
       .filter(({ node }) => {
-        if (props.skip === true) {
-          return props.loop[0].node !== node
+        if (skip === true) {
+          return loop[0].node !== node
         } else {
           return node
         }
       })
       .map(({ node }) => {
-        switch (props.type) {
+        switch (type) {
           case 'blog':
           case 'blogs':
             return (
               <BasicCard
-                width={[1, 1, 1 / 2, 1/2, 1 / 3]}
                 title={node.frontmatter.title}
                 subtitle={node.frontmatter.tags}
                 description={node.excerpt}
@@ -35,7 +36,6 @@ export default props => {
           case 'projects':
             return (
               <ProjectCard
-                width={[1, 1, 1 / 2, 1 / 2, 1/3]}
                 title={node.frontmatter.title}
                 subtitle={node.frontmatter.tags}
                 link={node.fields.slug}
@@ -46,7 +46,6 @@ export default props => {
           case 'article':
             return (
               <ArticleCard
-                width={[1, 1, 1 / 2, 1 / 2, 1 / 3]}
                 title={node.title}
                 href={node.url}
                 subtitle={node.author}
@@ -55,11 +54,53 @@ export default props => {
               />
             )
 
+          case 'communities':
+          case 'community':
+            return (
+              <BasicCard
+                title={node.title}
+                href={node.url}
+                description={node.description}
+              />
+            )
+
+          case 'design-systems':
+          case 'design-system':
+            return (
+              <BasicCard
+                title={node.title}
+                subtitle={node.company}
+                href={node.url.website}
+                reverse
+              />
+            )
+
+          case 'events':
+          case 'event':
+            return (
+              <EventCard title={node.title} href={node.url} date={node.date} {...node.location} />
+            )
+
+          case 'videos':
+          case 'video':
+            const videoThumbnail = getVideoThumbnail(
+              node.platform,
+              node.url
+            )
+            return (
+              <ImageCard
+                title={node.title}
+                href={node.url}
+                subtitle={node.author}
+                image={videoThumbnail}
+                date={node.date}
+              />
+            )
+
 
           default:
             return (
               <BasicCard
-                width={[1, 1, 1 / 2, 1 / 2, 1 / 3]}
                 title={node.frontmatter.title}
                 subtitle={node.frontmatter.tags}
                 description={node.excerpt}
@@ -69,5 +110,7 @@ export default props => {
         }
       })
   }
-  return <Flex flexWrap="wrap">{postLoop}</Flex>
+  return <CardGroup columns={3}>{postLoop}</CardGroup>
 }
+
+export default PostLoop

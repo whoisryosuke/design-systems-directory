@@ -4,59 +4,71 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
-const path = require(`path`);
-const { createFilePath } = require(`gatsby-source-filesystem`);
-const createPaginatedPages = require("gatsby-paginate");
-const { createArticlesPagination } = require("./scripts/build/json-pagination")
+const path = require(`path`)
+const { createFilePath } = require(`gatsby-source-filesystem`)
+const createPaginatedPages = require('gatsby-paginate')
+const {
+  createArticlesPagination,
+  createCommunitiesPagination,
+  createDesignSystemsPagination,
+  createEventsPagination,
+  createVideosPagination,
+} = require('./scripts/build/json-pagination')
 
-/** 
+/**
  * Custom Webpack config
- * 
+ *
  * Adds aliases for paths (like components)
  * so you don't get lost in relative hell -> '../../../'
  */
 exports.onCreateWebpackConfig = ({ config, actions }) => {
-    actions.setWebpackConfig({
-        resolve: {
-            alias: {
-                '@components': path.join(__dirname, './src/components'),
-                '@assets': path.join(__dirname, './src/assets'),
-                '@helpers': path.join(__dirname, './src/helpers'),
-                '@layouts': path.join(__dirname, './src/layouts'),
-                '@templates': path.join(__dirname, './src/templates'),
-            },
-        },
-    });
-};
+  actions.setWebpackConfig({
+    resolve: {
+      alias: {
+        '@components': path.join(__dirname, './src/components'),
+        '@assets': path.join(__dirname, './src/assets'),
+        '@helpers': path.join(__dirname, './src/helpers'),
+        '@layouts': path.join(__dirname, './src/layouts'),
+        '@templates': path.join(__dirname, './src/templates'),
+      },
+    },
+  })
+}
 
 exports.onCreateNode = ({ node, getNode, boundActionCreators }) => {
-    const { createNodeField } = boundActionCreators
-    
-    if (node.internal.type === "Mdx") {
-        const value = createFilePath({ node, getNode, basePath: `pages` })
-        createNodeField({
-            // Name of the field you are adding
-            name: "slug",
-            // Individual MDX node
-            node,
-            // Generated value based on filepath with "blog" prefix. We
-            // don't need a separating "/" before the value because
-            // createFilePath returns a path with the leading "/".
-            value: `${value}`,
-        })
-    }
-};
+  const { createNodeField } = boundActionCreators
 
- /**
-  * Pagination for all MDX posts
-  * 
-  * @param {string} section 
-  * @param {string} prefix
-  * @param {*} graphql 
-  * @param {*} createPage 
-  */
-async function createMdxPagination(section, prefix, graphql, createPage, reporter) {
-    const result = await graphql(`
+  if (node.internal.type === 'Mdx') {
+    const value = createFilePath({ node, getNode, basePath: `pages` })
+    createNodeField({
+      // Name of the field you are adding
+      name: 'slug',
+      // Individual MDX node
+      node,
+      // Generated value based on filepath with "blog" prefix. We
+      // don't need a separating "/" before the value because
+      // createFilePath returns a path with the leading "/".
+      value: `${value}`,
+    })
+  }
+}
+
+/**
+ * Pagination for all MDX posts
+ *
+ * @param {string} section
+ * @param {string} prefix
+ * @param {*} graphql
+ * @param {*} createPage
+ */
+async function createMdxPagination(
+  section,
+  prefix,
+  graphql,
+  createPage,
+  reporter
+) {
+  const result = await graphql(`
       {
         allMdx(
             sort: {fields: [frontmatter___date], order: DESC}, 
@@ -81,34 +93,32 @@ async function createMdxPagination(section, prefix, graphql, createPage, reporte
       }
     `)
 
+  if (result.errors) {
+    reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
+    console.log('🚨  ERROR:', result.errors)
+  }
 
-    if (result.errors) {
-        reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
-        console.log('🚨  ERROR:',    result.errors)
-    }
-
-    createPaginatedPages({
-        edges: result.data.allMdx.edges,
-        createPage: createPage,
-        pageTemplate: "src/templates/blog-archive.js",
-        pageLength: 6,
-        pathPrefix: prefix,
-        buildPath: (index, pathPrefix) => index > 1 ? `${pathPrefix}/${index}` : `/${pathPrefix}` // This is optional and this is the default
-    });
-
+  createPaginatedPages({
+    edges: result.data.allMdx.edges,
+    createPage: createPage,
+    pageTemplate: 'src/templates/blog-archive.js',
+    pageLength: 6,
+    pathPrefix: prefix,
+    buildPath: (index, pathPrefix) =>
+      index > 1 ? `${pathPrefix}/${index}` : `/${pathPrefix}`, // This is optional and this is the default
+  })
 }
 
 async function createMdxPages(graphql, createPage, reporter) {
-
-    const result = await graphql(`
+  const result = await graphql(`
     query {
       allMdx {
         edges {
           node {
             id
             frontmatter {
-                tags
-                section
+              tags
+              section
             }
             fields {
               slug
@@ -118,73 +128,81 @@ async function createMdxPages(graphql, createPage, reporter) {
       }
     }
   `)
-    if (result.errors) {
-        reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
+  if (result.errors) {
+    reporter.panicOnBuild('🚨  ERROR: Loading "createPages" query')
+  }
+  // Create blog post pages.
+  const posts = result.data.allMdx.edges
+  // We'll call `createPage` for each result
+  posts.forEach(({ node }, index) => {
+    // Grab random tag to do related posts
+    var tag =
+      node.frontmatter.tags[
+        Math.floor(Math.random() * node.frontmatter.tags.length)
+      ]
+
+    // Page object for page creation
+    let pendingPage = {
+      // This is the slug we created before
+      // (or `node.frontmatter.slug`)
+      path: node.fields.slug,
+      // This component will wrap our MDX content
+      component: path.resolve(`./src/templates/mdx-page.js`),
+      // We can use the values in this context in
+      // our page layout component
+      context: { id: node.id, tag: tag },
     }
-    // Create blog post pages.
-    const posts = result.data.allMdx.edges
-    // We'll call `createPage` for each result
-    posts.forEach(({ node }, index) => {
-        // Grab random tag to do related posts
-        var tag = node.frontmatter.tags[Math.floor(Math.random() * node.frontmatter.tags.length)];
 
-        // Page object for page creation
-        let pendingPage = {
-            // This is the slug we created before
-            // (or `node.frontmatter.slug`)
-            path: node.fields.slug,
-            // This component will wrap our MDX content
-            component: path.resolve(`./src/templates/mdx-page.js`),
-            // We can use the values in this context in
-            // our page layout component
-            context: { id: node.id, tag: tag },
-        }
+    // Change page template based on section
+    if (node.frontmatter.section == 'blog') {
+      pendingPage.component = path.resolve(`./src/templates/blog-post.js`)
+    }
 
-        // Change page template based on section
-        if (node.frontmatter.section == 'blog') {
-            pendingPage.component = path.resolve(`./src/templates/blog-post.js`);
-        }
+    createPage(pendingPage)
+  })
 
-        createPage(pendingPage)
+  /**
+   * Create archive pages for tags
+   */
+  let tags = []
+  // Iterate through each post, putting all found tags into `tags`
+  posts.forEach(({ node }) => {
+    if ('tags' in node.frontmatter) {
+      tags = tags.concat(node.frontmatter.tags)
+    }
+  })
+  // Eliminate duplicate tags
+  tags = tags.filter(function(item, i, ar) {
+    return ar.indexOf(item) === i
+  })
+
+  // Make tag pages
+  tags.forEach(tag => {
+    let tagName = tag.replace(/\s+/g, '-').toLowerCase()
+    createPage({
+      path: `/tags/${tagName}/`,
+      component: path.resolve(`./src/templates/tags.js`),
+      context: {
+        tag,
+      },
     })
-
-    /**
-     * Create archive pages for tags
-     */
-    let tags = [];
-    // Iterate through each post, putting all found tags into `tags`
-    posts.forEach(({ node }) => {
-        if ('tags' in node.frontmatter) {
-            tags = tags.concat(node.frontmatter.tags);
-        }
-    });
-    // Eliminate duplicate tags
-    tags = tags.filter(function (item, i, ar) { return ar.indexOf(item) === i; });
-
-    // Make tag pages
-    tags.forEach(tag => {
-        let tagName = tag.replace(/\s+/g, '-').toLowerCase();
-        createPage({
-            path: `/tags/${tagName}/`,
-            component: path.resolve(`./src/templates/tags.js`),
-            context: {
-                tag,
-            },
-        });
-    });
+  })
 }
 
-
 exports.createPages = async ({ graphql, actions, reporter }) => {
-    // Destructure the createPage function from the actions object
-    const { createPage } = actions
+  // Destructure the createPage function from the actions object
+  const { createPage } = actions
 
-    // Create pages from MDX content
-    await createMdxPages(graphql, createPage, reporter)
+  // Create pages from MDX content
+  await createMdxPages(graphql, createPage, reporter)
 
-    // Create paginatino for JSON content
-    await createArticlesPagination(graphql, createPage, reporter)
+  // Create pagination for JSON content
+  await createArticlesPagination(graphql, createPage, reporter)
+  await createCommunitiesPagination(graphql, createPage, reporter)
+  await createDesignSystemsPagination(graphql, createPage, reporter)
+  await createEventsPagination(graphql, createPage, reporter)
+  await createVideosPagination(graphql, createPage, reporter)
 
-    // Create pagination archive pages
-    await createMdxPagination('blog', 'blog', graphql, createPage, reporter)
+  // Create pagination archive pages
+  await createMdxPagination('blog', 'blog', graphql, createPage, reporter)
 }
