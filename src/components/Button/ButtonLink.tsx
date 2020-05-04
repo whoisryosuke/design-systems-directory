@@ -6,11 +6,12 @@ interface Props {
   children: React.node[]
   icon: JSX.Element
   reverse: boolean
+  disabled: boolean
   to: string
   href: string
 }
 
-export const ButtonLink: React.FC<Props> = ({to, href, children, icon: Icon, reverse, ...props}) => {
+export const ButtonLink: React.FC<Props> = ({to, href, children, icon: Icon, reverse, disabled, ...props}) => {
     const LinkComponent = to ? Link : 'a';
     let content = children
     if (Icon) {
@@ -23,7 +24,7 @@ export const ButtonLink: React.FC<Props> = ({to, href, children, icon: Icon, rev
             as={LinkComponent}
             to={to} 
             href={href}
-            variant="buttons.primary"
+            variant={disabled ? "buttons.disabled" : "buttons.primary"}
             sx={{
                 display:'inline-block'
             }}

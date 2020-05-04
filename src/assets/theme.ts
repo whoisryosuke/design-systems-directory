@@ -215,6 +215,12 @@ const theme = {
         transform: 'translateY(-0.25em)',
       },
     },
+    disabled: {
+      variant: 'buttons.disabled',
+      bg: "white",
+      borderColor: "gray.border",
+      color: "gray.dark",
+    },
     masthead: {
       variant: 'buttons.primary',
       fontSize: 3,

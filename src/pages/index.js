@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { graphql } from 'gatsby'
 import { Box, Flex, Heading } from 'rebass/styled-components'
-import { ArrowRight } from 'react-feather'
 
 import Layout from '../layouts/BaseLayout'
 import Link from '../components/Link/Link'
@@ -12,8 +11,8 @@ import ArticleCard from '../components/Card/ArticleCard'
 import ImageCard from '../components/Card/ImageCard'
 import EventCard from '../components/Card/EventCard'
 import Segment from '@components/Segment/Segment'
+import SubmitSegment from '@components/SubmitSegment/SubmitSegment'
 import Table from '@components/Table/Table'
-import ButtonLink from '@components/Button/ButtonLink'
 
 import getVideoThumbnail from '@helpers/getVideoThumbnail'
 
@@ -137,18 +136,7 @@ export default class Frontpage extends Component {
           </Box>
         </Segment>
 
-        <Flex p={5} alignItems="center">
-          <Box width={1 / 2} p={3} textAlign="right">
-            <Heading as="h2" variant="h2">
-              Looking to submit content?
-            </Heading>
-          </Box>
-          <Box width={1 / 2} p={2}>
-            <ButtonLink to="/" icon={ArrowRight}>
-              Check out our guide
-            </ButtonLink>
-          </Box>
-        </Flex>
+        <SubmitSegment />
       </Layout>
     )
   }

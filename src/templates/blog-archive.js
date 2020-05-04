@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import GLink from 'gatsby-link'
 import { Flex, Box, Text, Link as RLink } from 'rebass/styled-components'
+import { ArrowLeft, ArrowRight } from 'react-feather'
 
 import capitalizeFirstLetter from '../helpers/uppercase'
 
 import Layout from '../layouts/BaseLayout'
 import SEO from '@components/SEO/SEO'
-import ButtonOutline from '../components/Button/ButtonOutline'
+import ButtonLink from '@components/Button/ButtonLink'
 import SectionHeading from '../components/SectionHeading/SectionHeading'
 import PostLoop from '../components/PostLoop/PostLoop'
-import Link from '@components/Link/Link'
+import SubmitSegment from '@components/SubmitSegment/SubmitSegment'
 
 const StyledLink = styled(GLink)`
   width: 100%;
@@ -35,22 +36,12 @@ const StyledBackground = styled.section`
   background-position: top right;
 `
 
-const NavLink = props => {
-  if (!props.test) {
+const NavLink = ({icon,url,test,text, reverse, ...props}) => {
     return (
-      <StyledLink to={props.url}>
-        <Text variant="label" px={3} py={5}>
-          {props.text}
-        </Text>
-      </StyledLink>
+      <ButtonLink width={[1 / 2, 1 / 3]} to={url} icon={icon} disabled={!test} reverse={reverse}>
+        {text}
+      </ButtonLink>
     )
-  } else {
-    return (
-      <Text color="gray" variant="label">
-        {props.text}
-      </Text>
-    )
-  }
 }
 
 const IndexPage = ({ data, pathContext }) => {
@@ -85,44 +76,13 @@ const IndexPage = ({ data, pathContext }) => {
           <PostLoop type={pathPrefix} loop={group} />
         </Box>
 
-        <Flex as="nav" justifyContent="space-between">
-          <ButtonOutline
-            textAlign="left"
-            px={3}
-            py={5}
-            width={[1 / 2, 1 / 2, 1 / 2]}
-            sx={{ borderTop: 0, borderLeft: 0, borderRight: 0 }}
-            ariaLabel="prev"
-            height="3rem"
-          >
-            <NavLink test={first} url={previousUrl} text="Previous Page" />
-          </ButtonOutline>
-          <ButtonOutline
-            textAlign="right"
-            px={3}
-            py={5}
-            width={[1 / 2, 1 / 2, 1 / 2]}
-            sx={{ borderTop: 0, borderRight: 0 }}
-            ariaLabel="next"
-            height="3rem"
-          >
-            <NavLink test={last} url={nextUrl} text="Next Page" />
-          </ButtonOutline>
+        <Flex as="nav" py={3} justifyContent="space-between">
+          <NavLink test={first} url={previousUrl} icon={ArrowLeft} text="Previous Page" reverse />
+          <NavLink test={last} url={nextUrl} icon={ArrowRight} text="Next Page" />
         </Flex>
-        <Flex>
-          <ButtonOutline
-            width={[1]}
-            height="3rem"
-            p={3}
-            sx={{ borderRight: 0, borderLeft: 0, borderTop: 0 }}
-          >
-            <StyledLink to="tags">
-              <Text variant="label" p={3}>
-                Browse by tag
-              </Text>
-            </StyledLink>
-          </ButtonOutline>
-        </Flex>
+        
+        <SubmitSegment />
+
       </StyledBackground>
     </Layout>
   )
