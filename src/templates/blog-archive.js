@@ -79,7 +79,7 @@ const IndexPage = ({ data, pathContext }) => {
         title={`${sectionName} Archive - Page ${index}`}
         url={pathPrefix}
       />
-      <Segment>
+      <Segment pt={5}>
         <SectionHeading
           heading={`Browsing all`}
           highlight={sectionNameSmall}
