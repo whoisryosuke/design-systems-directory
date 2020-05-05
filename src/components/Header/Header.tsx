@@ -72,18 +72,31 @@ const StyledHeaderNav = styled.nav`
     display: inline-block;
     margin-left: 2.25em;
 
-    & a {
-      font-family: ${({ theme }) => theme.fonts.body};
-      color: ${props => props.theme.colors.gray.dark};
-      font-size: ${props => props.theme.fontSizes[2]}px;
-      text-decoration: none;
-      border: 0;
-      position: relative;
-      display: block;
+      & > div {
 
-      &:hover,
-      &:focus {
-        color: ${({ theme }) => theme.colors.primary};
+
+      ${props =>
+        !props.mobile &&
+        `
+        background:none;
+        box-shadow:none;
+        `
+      }
+
+        & a {
+          font-family: ${({ theme }) => theme.fonts.body};
+          color: ${props => props.theme.colors.gray.dark};
+          font-size: ${props => props.theme.fontSizes[2]}px;
+          text-decoration: none;
+          border: 0;
+          position: relative;
+          display: block;
+
+          &:hover,
+          &:focus {
+            color: ${({ theme }) => theme.colors.primary};
+          }
+        }
       }
     }
   }
@@ -96,10 +109,10 @@ const StyledHeaderNav = styled.nav`
     width:100%;
     height:100vh;
     top:3.6rem;
-    border-top:1px solid ${props.theme.colors.black};
+    border-top:1px solid ${props.theme.colors.gray.border};
     left:0;
     z-index:420;
-    background:${props.theme.colors.white};
+    background:${props.theme.colors.background};
 
     transition:transform 300ms ease-in;
 
@@ -115,25 +128,33 @@ const StyledHeaderNav = styled.nav`
     & li { 
       width:100%;
       margin:0;
-      border-bottom:1px solid ${props.theme.colors.black};
       flex: 1;
       display: flex;
       justify-content: center;
       flex-direction: column;
 
-      & a {
+      & > div {
+      
+        margin:1em;
         flex: 1;
         display: flex;
         justify-content: center;
         flex-direction: column;
-        padding:0 1em;
-        transition:color 300ms ease-out;
 
-        &:hover, &:focus {
-          background-color:${props.theme.colors.primary};
-          color:${props.theme.colors.white};
+        & a {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          padding:0 1em;
+          transition:color 300ms ease-out;
+
+          &:hover, &:focus {
+            background-color:${props.theme.colors.primary};
+            color:${props.theme.colors.white};
+          }
+
         }
-
       }
     }
   `}
@@ -166,29 +187,39 @@ const Header = React.memo(({mobile, visible, toggleVisibility}) => {
         <StyledHeaderNav mobile={mobile} visible={visible}>
           <Box as="ul">
             <li>
-              <Link to={'/design-systems'}>
+              <Box variant="card">
+                <Link to={'/design-systems'}>
                   Design Systems
-              </Link>
+                </Link>
+              </Box>
             </li>
             <li>
-              <Link to={'/articles'}>
+              <Box variant="card">
+                <Link to={'/articles'}>
                   Articles
               </Link>
+              </Box>
             </li>
             <li>
-              <Link to={'/videos'}>
+                <Box variant="card">
+                  <Link to={'/videos'}>
                   Videos
               </Link>
+              </Box>
             </li>
             <li>
-              <Link to={'/events'}>
+                  <Box variant="card">
+                    <Link to={'/events'}>
                   Events
               </Link>
+              </Box>
             </li>
             <li>
-              <Link to={'/communities'}>
+                    <Box variant="card">
+                      <Link to={'/communities'}>
                   Communities
               </Link>
+              </Box>
             </li>
           </Box>
         </StyledHeaderNav>
