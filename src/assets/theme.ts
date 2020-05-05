@@ -5,7 +5,7 @@ const animation = {
 
 const breakpoints = [
   // mobile
-  "500px",
+  "510px",
   // tablet
   "768px",
   // computer

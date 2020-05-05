@@ -66,7 +66,6 @@ const MobileButton = styled(Box)`
 
 const StyledHeaderNav = styled.nav`
   display: inline-block;
-  margin-left: 1em;
 
   & li {
     list-style-type: none;
@@ -96,7 +95,7 @@ const StyledHeaderNav = styled.nav`
     position:fixed;
     width:100%;
     height:100vh;
-    top:4.9rem;
+    top:3.6rem;
     border-top:1px solid ${props.theme.colors.black};
     left:0;
     z-index:420;
@@ -108,16 +107,26 @@ const StyledHeaderNav = styled.nav`
       width:100%;
       margin:0;
       padding:0;
+      display:flex;
+      flex-direction:column;
+      min-height: calc(100vh - 3.6rem);
     }
 
     & li { 
       width:100%;
       margin:0;
-      display:block;
       border-bottom:1px solid ${props.theme.colors.black};
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
 
       & a {
-        padding:3em 1em;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding:0 1em;
         transition:color 300ms ease-out;
 
         &:hover, &:focus {
