@@ -66,6 +66,7 @@ const MobileButton = styled(Box)`
 
 const StyledHeaderNav = styled.nav`
   display: inline-block;
+  text-align:right;
 
   & li {
     list-style-type: none;
@@ -80,6 +81,11 @@ const StyledHeaderNav = styled.nav`
         `
         background:none;
         box-shadow:none;
+
+        &:hover {
+          box-shadow:none;
+          transform: translateY(0);
+        }
         `
       }
 
